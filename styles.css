@@ -1,0 +1,370 @@
+/* =====================================================================
+   Bryant Street Buddies — styles.css
+   Palette + type follow the business card exactly.
+   Policy: the ONLY animation on this page is the mascot's tail wag (bottom
+   of this file). Nothing else moves or fades: hover states change instantly.
+   ===================================================================== */
+
+/* ---------- 1. Tokens ------------------------------------------------- */
+:root {
+  /* Brand palette (from the card) */
+  --cream:    #FAF6EE;
+  --sky:      #6BBDE3;
+  --pale:     #E1F2FB;
+  --navy:     #33368F;
+  --purple:   #4F46A5;
+  --lavender: #CBC6DB;
+  --ink:      #1F1F24;   /* near-black, used for the h1 only (like the card title) */
+
+  /* Semantic */
+  --text:     var(--navy);   /* 9.4:1 on cream, 8.9:1 on pale, 4.85:1 on sky */
+  --focus:    var(--navy);
+  /* The tagline is the ONE low-contrast exception on the page (sky on cream = 1.95:1),
+     because that is exactly how the card sets "Dog Walking Service". If you want it
+     to pass AA for large text, change this single line to:  --tagline: #3697CD;  (3.0:1) */
+  --tagline:  var(--sky);
+  /* NOTE: text on sky blue is always navy. Never white or cream on sky (2.1:1 — fails). */
+
+  /* Type. Only Caveat Brush + Delius are loaded from Google Fonts; the rest are
+     fallbacks so blocked/offline visitors still see hand-drawn text. */
+  --font-display: "Caveat Brush", "Permanent Marker", "Marker Felt", "Chalkboard SE", cursive;
+  --font-body:    "Delius", "Gochi Hand", "Chalkboard SE", "Bradley Hand", "Comic Sans MS", cursive;
+
+  /* Fluid scale (≈360px → ≈1200px) */
+  --fs-body:    clamp(1.125rem, 1.05rem + 0.4vw, 1.25rem);
+  --fs-small:   clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --fs-h3:      clamp(1.5rem, 1.3rem + 1vw, 2rem);
+  --fs-h2:      clamp(2.25rem, 1.7rem + 2.4vw, 3.25rem);
+  --fs-price:   clamp(2.75rem, 2rem + 3.2vw, 4rem);
+  --fs-h1:      clamp(3rem, 2rem + 6vw, 5.5rem);
+  --fs-tagline: clamp(1.2rem, 1rem + 1vw, 1.6rem);
+  --lh-body:    1.65;
+  --fs-label:   0.95rem;
+
+  /* Rhythm */
+  --space-xs: 0.5rem;
+  --space-s:  1rem;
+  --space-m:  clamp(1.5rem, 1rem + 2vw, 2.5rem);
+  --space-l:  clamp(3rem, 2rem + 4vw, 5.5rem);
+  --gutter:   clamp(1rem, 4vw, 2rem);
+  --container: 60rem;
+  --measure:   60ch;
+}
+
+/* ---------- 2. Base --------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--text);
+  font: 400 var(--fs-body) / var(--lh-body) var(--font-body);
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 400;          /* single-weight fonts: avoid faux bold */
+  line-height: 1.05;
+  margin: 0;
+}
+
+p { margin: 0; }
+a { color: inherit; }
+svg { display: block; }
+
+/* ---------- 3. Utilities --------------------------------------------- */
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+.container--narrow { max-width: calc(var(--measure) + 2 * var(--gutter)); }
+
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: var(--space-s);
+  z-index: 10;
+  padding: 0.5rem 1rem;
+  background: var(--navy);
+  color: var(--cream);
+  border-radius: 8px;
+  text-decoration: none;
+}
+.skip-link:focus { top: var(--space-s); }
+
+/* ---------- 4. Hero, mascot, wave ------------------------------------ */
+.hero {
+  background: var(--cream);
+  text-align: center;
+  padding-top: var(--space-l);
+}
+
+.hero__inner {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-m);
+}
+
+.hero__title {
+  font-size: var(--fs-h1);
+  line-height: 1;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.hero__tagline {
+  font-size: var(--fs-tagline);
+  color: var(--tagline);
+  margin-top: calc(-1 * var(--space-s));
+  max-width: 28ch;
+}
+
+.mascot {
+  display: block;
+  width: 100%;
+  max-width: 360px;
+}
+
+.dog {
+  width: 100%;
+  height: auto;
+  overflow: visible;         /* defensive: never clip the wag, even if the swing is enlarged */
+}
+
+.wave {
+  width: 100%;
+  height: clamp(36px, 6vw, 80px);
+  margin-top: var(--space-m);
+  margin-bottom: -1px;       /* overlap the pale section by 1px: no hairline seam */
+}
+
+/* ---------- 5. Sections ---------------------------------------------- */
+.section { padding-block: var(--space-l); }
+.section--pale { background: var(--pale); }
+
+.section__title {
+  font-size: var(--fs-h2);
+  color: var(--navy);
+  text-align: center;
+  margin-bottom: var(--space-m);
+}
+
+/* Marker-style underline: a two-stroke sky squiggle behind the heading text.
+   The heading gets its own stacking context (z-index: 0) so the ::after with
+   z-index: -1 sits behind the glyphs but ABOVE the section background. */
+.marker {
+  position: relative;
+  z-index: 0;
+  display: inline-block;
+  padding: 0 0.15em 0.1em;
+}
+.marker::after {
+  content: "";
+  position: absolute;
+  left: -0.05em;
+  right: -0.05em;
+  bottom: 0;
+  height: 0.34em;
+  z-index: -1;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 16' preserveAspectRatio='none'%3E%3Cpath d='M4 10 C40 3 80 14 122 8 S180 4 196 9' fill='none' stroke='%236BBDE3' stroke-width='7' stroke-linecap='round'/%3E%3Cpath d='M8 12 C50 8 90 15 140 10 S186 8 194 11' fill='none' stroke='%236BBDE3' stroke-width='3' stroke-linecap='round' opacity='.55'/%3E%3C/svg%3E") no-repeat;
+  background-size: 100% 100%;
+}
+
+/* Rates */
+.rates {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-m);
+}
+
+.rate-card {
+  width: 100%;
+  max-width: 22rem;
+  margin-inline: auto;
+  background: var(--cream);
+  color: var(--navy);
+  text-align: center;
+  padding: var(--space-m) var(--space-s);
+  border-radius: 14px;
+  box-shadow: 0 2px 0 var(--lavender), 0 10px 20px -12px rgba(51, 54, 143, 0.25);
+}
+
+.rate-card__label {
+  font-size: var(--fs-label);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--purple);
+  margin-bottom: 0.35rem;
+}
+.rate-card__time { font-size: var(--fs-small); font-family: var(--font-body); }
+.rate-card__price {
+  font-family: var(--font-display);
+  font-size: var(--fs-price);
+  line-height: 1;
+  color: var(--navy);
+  margin: 0.15em 0 0.35em;
+}
+.rate-card__note { font-size: var(--fs-small); }
+
+/* About */
+#about p { text-align: left; }
+.about__sign {
+  margin-top: var(--space-s);
+  color: var(--purple);
+}
+.about__sign::after {
+  content: "";
+  display: inline-block;
+  width: 1.1em;
+  height: 1.1em;
+  margin-left: 0.4em;
+  vertical-align: -0.2em;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236BBDE3'%3E%3Cellipse cx='12' cy='16.5' rx='5.2' ry='4.4'/%3E%3Cellipse cx='4.6' cy='10.5' rx='2.1' ry='2.7' transform='rotate(-20 4.6 10.5)'/%3E%3Cellipse cx='9.2' cy='6' rx='2.3' ry='3'/%3E%3Cellipse cx='14.8' cy='6' rx='2.3' ry='3'/%3E%3Cellipse cx='19.4' cy='10.5' rx='2.1' ry='2.7' transform='rotate(20 19.4 10.5)'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* How it works: three numbered steps */
+.steps {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 34rem;
+  display: grid;
+  gap: var(--space-m);
+}
+.step {
+  display: grid;
+  grid-template-columns: 2.25rem 1fr;
+  gap: 0.85rem;
+  align-items: start;
+}
+.step__num {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: var(--sky);
+  color: var(--navy);           /* 4.85:1 */
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  line-height: 2.25rem;
+  text-align: center;
+}
+.step p { line-height: 1.5; }
+.step strong { font-weight: 400; color: var(--purple); }
+
+/* ---------- 6. Button ------------------------------------------------- */
+.button {
+  display: inline-block;
+  background: var(--sky);
+  color: var(--navy);              /* 4.85:1 — never white on sky */
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: 1;
+  padding: 0.9rem 1.75rem;
+  min-height: 48px;
+  text-decoration: none;
+  border: 2px solid var(--navy);
+  border-radius: 999px;
+}
+.button:hover {
+  background: var(--navy);
+  color: var(--cream);             /* 9.4:1 */
+}
+
+/* ---------- 7. Footer ------------------------------------------------- */
+.footer {
+  background: var(--sky);
+  color: var(--navy);              /* 4.85:1 on sky */
+  text-align: center;
+  padding-block: var(--space-l);
+}
+.footer__contact {
+  font-style: normal;
+  display: grid;
+  gap: var(--space-xs);
+  justify-items: center;
+}
+.footer__name {
+  font-size: var(--fs-h3);
+  line-height: 1.2;
+}
+.footer__phone a {
+  display: inline-block;
+  font-size: var(--fs-h3);
+  padding: 0.4rem 0.75rem;
+  min-height: 44px;                /* comfortable tap target */
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.15em;
+}
+.footer__note { font-size: var(--fs-body); }
+
+/* ---------- 8. Focus -------------------------------------------------- */
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+.button:focus-visible { outline-offset: 4px; }
+/* The skip-link target: no ring around the whole main region */
+#main:focus-visible { outline: none; }
+
+/* ---------- 9. Breakpoints (layout only; type/space scale fluidly) --- */
+@media (min-width: 640px) {
+  .rates {
+    grid-template-columns: repeat(3, 1fr);
+    align-items: stretch;
+  }
+  .rate-card { max-width: none; }
+
+  .steps {
+    max-width: none;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-l);
+  }
+  .step { grid-template-columns: 1fr; justify-items: center; text-align: center; gap: 0.6rem; }
+}
+
+@media (min-width: 900px) {
+  .hero__inner {
+    max-width: 64rem;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    grid-template-areas:
+      "title   dog"
+      "tagline dog"
+      "button  dog";
+    align-items: center;
+    align-content: center;
+    justify-items: start;
+    column-gap: var(--space-m);
+    row-gap: var(--space-s);
+    text-align: left;
+  }
+  .hero__title   { grid-area: title; }
+  .hero__tagline { grid-area: tagline; margin-top: 0; }
+  .mascot        { grid-area: dog; justify-self: end; max-width: 460px; }
+  .button        { grid-area: button; margin-top: var(--space-s); }
+}
+
+/* ---------- 10. The one animation: tail wag (opt-in via reduced-motion) */
+@media (prefers-reduced-motion: no-preference) {
+  #tail {
+    transform-box: view-box;         /* origin measured in viewBox user units */
+    transform-origin: 240px 102px;   /* where the tail leaves the rump */
+  }
+  @keyframes wag {
+    0%, 100% { transform: rotate(0deg); }
+    25%      { transform: rotate(-10deg); }   /* tip lifts */
+    75%      { transform: rotate(6deg); }     /* tip dips a little */
+  }
+  /* Hover wag only on devices that really hover (no sticky hover on touch) */
+  @media (hover: hover) and (pointer: fine) {
+    .mascot:hover #tail { animation: wag 700ms cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite; }
+  }
+  /* Tap-to-wag (script.js adds/removes .is-wagging): two wags, then rest */
+  .mascot.is-wagging #tail { animation: wag 700ms cubic-bezier(0.45, 0.05, 0.55, 0.95) 2; }
+}
