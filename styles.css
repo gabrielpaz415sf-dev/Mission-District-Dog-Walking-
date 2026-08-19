@@ -49,6 +49,7 @@
   --shadow-card-hover: 0 2px 4px rgba(16, 34, 47, 0.07),
                        0 12px 26px -8px rgba(16, 34, 47, 0.16);
   --ease: cubic-bezier(0.2, 0.6, 0.3, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);   /* decelerating, soft landing */
 }
 
 /* ---------- Base ------------------------------------------------------ */
@@ -228,10 +229,26 @@ a { color: var(--accent); }
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  text-align: center;
-  padding: var(--space-m) var(--space-s);
   box-shadow: var(--shadow-card);
+  overflow: hidden;
 }
+.rate-card__link {
+  display: block;
+  padding: var(--space-m) var(--space-s);
+  text-align: center;
+  color: inherit;
+  text-decoration: none;
+}
+.rate-card__cta {
+  display: block;
+  margin-top: var(--space-s);
+  font-size: var(--fs-label);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--brand);
+}
+.rate-card__link:hover .rate-card__cta,
+.rate-card__link:focus-visible .rate-card__cta { text-decoration: underline; }
 @media (hover: hover) and (pointer: fine) {
   .rate-card:hover {
     box-shadow: var(--shadow-card-hover);
@@ -529,7 +546,7 @@ a { color: var(--accent); }
   color: #fff;
 }
 .section--brand .section__title { color: #fff; }
-.section--brand .section__title::after { background: #fff; }
+.section--brand .section__title::after { display: none; }
 
 .band__eyebrow {
   margin: 0 0 0.5rem;
@@ -691,31 +708,72 @@ a { color: var(--accent); }
 
 /* ---------- Motion (opt-in only) -------------------------------------- */
 @media (prefers-reduced-motion: no-preference) {
-  .rate-card,
+  .rate-card__link,
   .review-card,
   .button,
   .link-call,
-  .footer__phone a {
+  .topbar,
+  .topbar__cta {
     transition: box-shadow 200ms var(--ease),
                 background-color 160ms var(--ease),
                 color 160ms var(--ease),
                 border-color 160ms var(--ease),
-                transform 200ms var(--ease),
-                text-decoration-color 160ms var(--ease);
+                transform 200ms var(--ease);
   }
   @media (hover: hover) and (pointer: fine) {
-    .rate-card:hover,
-    .review-card:hover { transform: translateY(-3px); }
+    .rate-card:has(.rate-card__link:hover),
+    .review-card:hover { transform: translateY(-4px); }
+    .rate-card { transition: transform 200ms var(--ease); }
     .button:hover      { transform: translateY(-2px); }
   }
   .button:active { transform: translateY(0); }
 
-  /* Sections settle in on first scroll-in (script.js adds .is-visible).
-     Without JS the .reveal class is never applied, so content shows normally. */
-  .reveal {
+  /* ---- Scroll reveal --------------------------------------------------
+     .reveal-item is applied by script.js, never in the HTML, so the page
+     is never left blank if JavaScript fails. --i staggers grid children. */
+  .reveal-item {
     opacity: 0;
-    transform: translateY(14px);
-    transition: opacity 500ms var(--ease), transform 500ms var(--ease);
+    transform: translateY(22px);
+    transition: opacity 620ms var(--ease-out), transform 620ms var(--ease-out);
+    transition-delay: calc(var(--i, 0) * 90ms);
+    will-change: opacity, transform;
   }
-  .reveal.is-visible { opacity: 1; transform: none; }
+  .reveal-item.is-visible {
+    opacity: 1;
+    transform: none;
+    will-change: auto;
+  }
+
+  /* The drawn underline sketches itself in, left to right */
+  .section__title.reveal-item::after { clip-path: inset(0 100% 0 0); }
+  .section__title.reveal-item.is-visible::after {
+    animation: draw-underline 620ms 180ms both var(--ease-out);
+  }
+  @keyframes draw-underline {
+    from { clip-path: inset(0 100% 0 0); }
+    to   { clip-path: inset(0 0 0 0); }
+  }
+
+  /* ---- Hero settles in on load ---------------------------------------- */
+  .js-motion .hero__title,
+  .js-motion .hero__tagline,
+  .js-motion .promises,
+  .js-motion .hero .button,
+  .js-motion .mascot {
+    animation: hero-rise 760ms both var(--ease-out);
+  }
+  .js-motion .hero__title   { animation-delay: 40ms; }
+  .js-motion .hero__tagline { animation-delay: 130ms; }
+  .js-motion .promises      { animation-delay: 210ms; }
+  .js-motion .hero .button  { animation-delay: 290ms; }
+  .js-motion .mascot        { animation-delay: 160ms; }
+  @keyframes hero-rise {
+    from { opacity: 0; transform: translateY(26px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* ---- Sticky header lifts off the page once you scroll --------------- */
+  .topbar.is-scrolled {
+    box-shadow: 0 1px 0 var(--border), 0 8px 24px -14px rgba(16, 34, 47, 0.45);
+  }
 }
