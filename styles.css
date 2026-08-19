@@ -445,6 +445,30 @@ a { color: var(--accent); }
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cellipse cx='12' cy='16' rx='6' ry='5' fill='%238CC6E8'/%3E%3Cellipse cx='5' cy='10' rx='2.5' ry='3.2' fill='%238CC6E8'/%3E%3Cellipse cx='10' cy='6' rx='2.6' ry='3.4' fill='%238CC6E8'/%3E%3Cellipse cx='15.5' cy='6.4' rx='2.6' ry='3.4' fill='%238CC6E8'/%3E%3Cellipse cx='20' cy='11' rx='2.5' ry='3.2' fill='%238CC6E8'/%3E%3C/svg%3E") no-repeat center / contain;
 }
 
+/* Photo placeholders: moderate size, reads as "photo coming" not "broken" */
+.photo-frame {
+  margin: var(--space-m) auto 0;
+  max-width: 320px;
+}
+.photo-frame__box {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+}
+.photo-frame__icon { width: 34px; height: 34px; opacity: 0.55; }
+.photo-frame__caption {
+  margin: 0.6rem 0 0;
+  text-align: center;
+  font-size: var(--fs-label);
+  color: var(--muted);
+}
+
 .about__sign {
   margin-top: var(--space-s);
   color: var(--muted);
