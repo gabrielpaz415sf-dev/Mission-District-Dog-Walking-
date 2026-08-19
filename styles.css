@@ -238,7 +238,6 @@ a { color: var(--accent); }
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-card);
 }
-.rate-card__link { border-radius: var(--radius-lg); overflow: hidden; }
 .rate-card__link {
   display: block;
   padding: var(--space-m) var(--space-s);
