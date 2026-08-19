@@ -1,4 +1,4 @@
-// Mission Mutts — script.js
+// Mission Dog Walking — script.js
 // The page is fully functional without JavaScript: every class used for motion
 // is added here at runtime, so with JS off nothing is ever left hidden.
 // All of it is skipped when the visitor prefers reduced motion.

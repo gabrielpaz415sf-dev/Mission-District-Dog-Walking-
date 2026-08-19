@@ -1,5 +1,5 @@
 /*
-   Mission Mutts — styles.css
+   Mission Dog Walking — styles.css
    Professional identity: Lora (display) + Source Sans 3 (text),
    deep-blue brand on white with cool-grey alternating bands.
 */
@@ -126,6 +126,13 @@ a { color: var(--accent); }
 .hero__title {
   font-size: var(--fs-h1);
   margin: 0;
+}
+
+.hero__byline {
+  font-size: var(--fs-body);
+  font-weight: 600;
+  color: var(--brand);
+  margin: 0.15rem 0 0;
 }
 
 .hero__tagline {
@@ -688,6 +695,7 @@ a { color: var(--accent); }
     grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
     grid-template-areas:
       "title    logo"
+      "byline   logo"
       "tagline  logo"
       "promises logo"
       "button   logo";
@@ -699,6 +707,7 @@ a { color: var(--accent); }
     text-align: left;
   }
   .hero__title   { grid-area: title; }
+  .hero__byline  { grid-area: byline; }
   .hero__tagline { grid-area: tagline; }
   .promises      { grid-area: promises; justify-content: flex-start; }
   .mascot        { grid-area: logo; justify-self: center; max-width: 330px; }
@@ -756,6 +765,7 @@ a { color: var(--accent); }
 
   /* ---- Hero settles in on load ---------------------------------------- */
   .js-motion .hero__title,
+  .js-motion .hero__byline,
   .js-motion .hero__tagline,
   .js-motion .promises,
   .js-motion .hero .button,
@@ -763,7 +773,8 @@ a { color: var(--accent); }
     animation: hero-rise 760ms both var(--ease-out);
   }
   .js-motion .hero__title   { animation-delay: 40ms; }
-  .js-motion .hero__tagline { animation-delay: 130ms; }
+  .js-motion .hero__byline  { animation-delay: 90ms; }
+  .js-motion .hero__tagline { animation-delay: 150ms; }
   .js-motion .promises      { animation-delay: 210ms; }
   .js-motion .hero .button  { animation-delay: 290ms; }
   .js-motion .mascot        { animation-delay: 160ms; }
