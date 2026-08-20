@@ -149,6 +149,12 @@ a { color: var(--accent); }
   max-width: 280px;
   margin-block: var(--space-xs);
 }
+/* On phones the mascot is ~235px tall and pushed the primary CTA below the
+   fold, so it drops below the button here. The 900px grid below re-places it
+   by grid-area, where `order` has no effect. */
+@media (max-width: 899px) {
+  .mascot { order: 1; }
+}
 .logo-mark { display: block; width: 100%; height: auto; }
 
 /* Two concrete promises in the hero */
