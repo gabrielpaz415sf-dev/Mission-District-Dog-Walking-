@@ -7,7 +7,7 @@
 :root {
   /* Brand */
   --brand:        #1F74B5;   /* light-blue brand (white text passes at 4.97:1) */
-  --brand-strong: #17608F;   /* pressed / footer */
+  --brand-strong: #1E70A3;   /* pressed / footer */
   --accent:       #1B6AA6;   /* link blue (5.7:1 on white) */
   --star:         #8A620F;   /* review stars only */
   --sky:          #8CC6E8;   /* decorative only: wave, underlines, paw */
