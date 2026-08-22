@@ -465,23 +465,8 @@ a { color: var(--accent); }
   background: #000;
 }
 
-/* Photo placeholders: moderate size, reads as "photo coming" not "broken" */
-.photo-frame {
-  margin: var(--space-m) auto 0;
-  max-width: 320px;
-}
-.photo-frame__box {
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--muted);
-}
-.photo-frame__icon { width: 34px; height: 34px; opacity: 0.55; }
+/* Caption under the About-section video (was shared with the photo
+   placeholders that used to sit in How It Works / References) */
 .photo-frame__caption {
   margin: 0.6rem 0 0;
   text-align: center;
